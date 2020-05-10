@@ -23,3 +23,9 @@ Route.get('files/:id', 'FileController.show')
 
 Route.post('passwords', 'ForgotPasswordController.store')
 Route.put('passwords', 'ForgotPasswordController.update')
+Route.post('users/email', 'AlterEmailController.store')
+Route.put('users/email', 'AlterEmailController.update')
+
+Route.post('profiles', 'ProfileController.store').middleware(['auth'])
+Route.put('profiles', 'ProfileController.update').middleware(['auth'])
+Route.get('profiles', 'ProfileController.show').middleware(['auth'])

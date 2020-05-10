@@ -1,24 +1,21 @@
 'use strict'
-const moment = require('moment')
 const crypto = require('crypto')
 const Mail = use('Mail')
-
+const moment = require('moment')
 const User = use('App/Models/User')
 
-class ForgotPasswordController {
+class AlterEmailController {
   async store({ request, response }) {
     try {
-      const email = request.input('email')
-
+      const { email } = request.all()
       const user = await User.findByOrFail('email', email)
-
       user.token = crypto.randomBytes(10).toString('hex')
       user.token_created_at = new Date()
 
       await user.save()
 
       await Mail.send(
-        ['emails.forgot_password'],
+        ['emails.alter_email'],
         {
           email,
           token: user.token,
@@ -28,7 +25,7 @@ class ForgotPasswordController {
           message
             .to(user.email)
             .from('tech@jccolchoes.com.br')
-            .subject('Recuperação de senha')
+            .subject('Solicitação para alterar o e-mail')
         }
       )
     } catch (err) {
@@ -42,7 +39,7 @@ class ForgotPasswordController {
 
   async update({ request, response }) {
     try {
-      const { token, password } = request.all()
+      const { email, token } = request.all()
 
       const user = await User.findByOrFail('token', token)
 
@@ -53,22 +50,20 @@ class ForgotPasswordController {
       if (tokenExpired) {
         return response
           .status(401)
-          .send({ error: { message: 'O Token de recuperação expirou' } })
+          .send({ error: { message: 'Token expired' } })
       }
 
+      user.email = email
       user.token = null
       user.token_created_at = null
-      user.password = password
 
       await user.save()
     } catch (err) {
-      return response.status(err.status).send({
-        error: {
-          message: 'Algo seu errado ao resetar a sua senha'
-        }
-      })
+      return response
+        .status(400)
+        .send({ error: { message: 'Ocorreu um erro ao alterar seu e-mail' } })
     }
   }
 }
 
-module.exports = ForgotPasswordController
+module.exports = AlterEmailController

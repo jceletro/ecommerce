@@ -1,5 +1,7 @@
 'use strict'
 
+const Profile = use('App/Models/Profile')
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -9,17 +11,6 @@
  */
 class ProfileController {
   /**
-   * Show a list of all customers.
-   * GET customers
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index({ request, response, view }) {}
-
-  /**
    * Create/save a new customer.
    * POST customers
    *
@@ -27,7 +18,29 @@ class ProfileController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response }) {}
+  async store({ request, response, auth }) {
+    const data = request.only([
+      'first_name',
+      'last_name',
+      'cpf',
+      'rg',
+      'gender',
+      'tellphone',
+      'birthday'
+    ])
+    const userId = auth.user.id
+    const profileExists = await Profile.findBy('user_id', userId)
+    if (profileExists) {
+      return response
+        .status(400)
+        .send({ error: 'A profile already exists for this user' })
+    }
+
+    const profile = await Profile.create({ ...data, user_id: userId })
+    await profile.load('user')
+
+    return profile
+  }
 
   /**
    * Display a single customer.
@@ -38,7 +51,14 @@ class ProfileController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {}
+  async show({ auth }) {
+    const userId = auth.user.id
+    const profile = await Profile.findBy('user_id', userId)
+
+    await profile.load('user')
+
+    return profile
+  }
 
   /**
    * Update customer details.
@@ -48,17 +68,20 @@ class ProfileController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {}
+  async update({ auth, request, response }) {
+    const userId = auth.user.id
+    const profile = await Profile.findBy('user_id', userId)
+    console.log(profile)
+    const data = request.only(['tellphone', 'gender', 'birthday'])
 
-  /**
-   * Delete a customer with id.
-   * DELETE customers/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy({ params, request, response }) {}
+    profile.merge(data)
+
+    await profile.save()
+
+    await profile.load('user')
+
+    return profile
+  }
 }
 
 module.exports = ProfileController
