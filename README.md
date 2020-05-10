@@ -1,28 +1,31 @@
-# Adonis API application
+# Ecommerce JC Eletro
 
-This is the boilerplate for creating an API server in AdonisJs, it comes pre-configured with.
+[Roadmap do Projeto](Ecommerce%20JC%20Eletro%20448f41f35ff84fbc85813ea20b8b522b/Roadmap%20do%20Projeto%200bcf99a0dd184b5e9239652caf15a56f.md)
 
-1. Bodyparser
-2. Authentication
-3. CORS
-4. Lucid ORM
-5. Migrations and seeds
+[Cronograma de Entrega de Software](Ecommerce%20JC%20Eletro%20448f41f35ff84fbc85813ea20b8b522b/Cronograma%20de%20Entrega%20de%20Software%2075c4cc85570241b590f54c94669d6c06.csv)
 
-## Setup
+## Como rodar esse projeto
 
-Use the adonis command to install the blueprint
+Clone esse repositório digitando o seguinte comando em seu terminal:
 
 ```bash
-adonis new yardstick --api-only
+git clone https://github.com/jceletro/ecommerce.git
 ```
 
-or manually clone the repo and then run `npm install`.
+Para rodar esse projeto é necessario  que você tenha o Node.JS instalado, e o Framework Adonis.JS.
 
+Com as dependecias instaladas, na pasta do projeto rode o seguinte comendo para instalar as dependências do projeto:
 
-### Migrations
+```bash
+yarn
+# ou se usa NPM rode
+npm install
+```
 
-Run the following command to run startup migrations.
+### Migrações
 
-```js
+Com o banco de dados configurado no arquivo .env, rode o seguinte comando em seu terminal:
+
+```bash
 adonis migration:run
 ```
