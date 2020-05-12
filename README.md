@@ -1,6 +1,6 @@
 # Ecommerce Adonis JS
 
-![assets/Home.png](assets/Home.png)
+![README_assets/Home.png](README_assets/Home.png)
 
 ## Como rodar esse projeto
 
