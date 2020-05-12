@@ -1,6 +1,6 @@
 ![README_assets/Home.png](README_assets/logo_adonis.png)
 
-Uma API de e-commerce simples
+Uma API de e-commerce simples criada com Adonis.Js
 
 ## Como rodar esse projeto
 
