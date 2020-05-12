@@ -1,13 +1,13 @@
-# Ecommerce Adonis JS
+![README_assets/Home.png](README_assets/logo_adonis.png)
 
-![README_assets/Home.png](README_assets/Home.png)
+Uma API de e-commerce simples
 
 ## Como rodar esse projeto
 
 Clone esse repositório digitando o seguinte comando em seu terminal:
 
 ```bash
-git clone https://github.com/jceletro/ecommerce.git
+git clone https://github.com/kelvynsantana/ecommerce-adonis-api.git
 ```
 
 Para rodar esse projeto é necessario  que você tenha o Node.JS instalado, e o Framework Adonis.JS.
@@ -16,7 +16,7 @@ Com as dependecias instaladas, na pasta do projeto rode o seguinte comendo para 
 
 ```bash
 yarn
-# ou se usa NPM rode
+# ou se usa NPM rode:
 npm install
 ```
 
