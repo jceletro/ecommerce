@@ -1,3 +1,0 @@
-# API - catalogo
-
-Status: Pendente
