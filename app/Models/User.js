@@ -39,6 +39,10 @@ class User extends Model {
     return this.hasOne('App/Models/Profile')
   }
 
+  addresses() {
+    return this.hasMany('App/Models/UserAddress')
+  }
+
   static get hidden() {
     return ['password']
   }

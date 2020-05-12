@@ -1,5 +1,5 @@
 'use strict'
-
+const Mail = use('Mail')
 const Profile = use('App/Models/Profile')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -38,6 +38,20 @@ class ProfileController {
 
     const profile = await Profile.create({ ...data, user_id: userId })
     await profile.load('user')
+
+    await Mail.send(
+      ['emails.create_account'],
+      {
+        email: auth.user.email,
+        name: profile.first_name
+      },
+      (message) => {
+        message
+          .to(auth.user.email)
+          .from('tech@jccolchoes.com.br')
+          .subject('Seja bem vindo!')
+      }
+    )
 
     return profile
   }
