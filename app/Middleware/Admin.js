@@ -10,12 +10,16 @@ class Admin {
    * @param {Function} next
    */
   async handle({ request, response, auth }, next) {
-    const user = await auth.getUser()
+    try {
+      const user = await auth.getUser()
 
-    if (!user.role || user.role !== 'admin')
-      throw new Error('Require admin previleges')
+      if (!user.roles || user.roles !== 'admin')
+        throw new Error('This action require admin previleges')
 
-    await next()
+      await next()
+    } catch (err) {
+      return response.status(401).send({ message: err.message })
+    }
   }
 }
 

@@ -39,3 +39,9 @@ Route.get('users/profiles', 'ProfileController.show').middleware(['auth'])
 Route.post('users/addresses', 'UserAddressController.store').middleware([
   'auth'
 ])
+/** Category */
+
+Route.post('categories', 'CategoryController.store').middleware([
+  'auth',
+  'admin'
+])

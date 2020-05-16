@@ -1,5 +1,4 @@
 'use strict'
-const Mail = use('Mail')
 const Profile = use('App/Models/Profile')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -19,15 +18,7 @@ class ProfileController {
    * @param {Response} ctx.response
    */
   async store({ request, response, auth }) {
-    const data = request.only([
-      'first_name',
-      'last_name',
-      'cpf',
-      'rg',
-      'gender',
-      'tellphone',
-      'birthday'
-    ])
+    const data = request.only(['cpf', 'rg', 'gender', 'tellphone', 'birthday'])
     const userId = auth.user.id
     const profileExists = await Profile.findBy('user_id', userId)
     if (profileExists) {
@@ -35,23 +26,8 @@ class ProfileController {
         .status(400)
         .send({ error: 'A profile already exists for this user' })
     }
-
     const profile = await Profile.create({ ...data, user_id: userId })
     await profile.load('user')
-
-    await Mail.send(
-      ['emails.create_account'],
-      {
-        email: auth.user.email,
-        name: profile.first_name
-      },
-      (message) => {
-        message
-          .to(auth.user.email)
-          .from('tech@jccolchoes.com.br')
-          .subject('Seja bem vindo!')
-      }
-    )
 
     return profile
   }
@@ -68,6 +44,7 @@ class ProfileController {
   async show({ auth }) {
     const userId = auth.user.id
     const profile = await Profile.findBy('user_id', userId)
+    // Create profile owner verification
 
     await profile.load('user')
 
