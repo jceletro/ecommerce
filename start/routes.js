@@ -45,3 +45,8 @@ Route.post('categories', 'CategoryController.store').middleware([
   'auth',
   'admin'
 ])
+
+/** Product */
+
+Route.post('products', 'ProductController.store').middleware(['auth', 'admin'])
+Route.post('products/:id', 'ProductController.show')
