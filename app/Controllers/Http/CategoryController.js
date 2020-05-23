@@ -18,7 +18,12 @@ class CategoryController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view }) {}
+  async index({ request }) {
+    const { page } = request.get
+    const categories = await Category.query().with('image').paginate(page)
+
+    return categories
+  }
 
   /**
    * Create/save a new category.
@@ -47,7 +52,15 @@ class CategoryController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {}
+  async show({ params, response }) {
+    const category = await Category.findBy('id', params.id)
+
+    if (!category) {
+      return response.status(404).send({ error: 'category not found' })
+    }
+
+    return category
+  }
 
   /**
    * Update category details.
@@ -57,7 +70,23 @@ class CategoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {}
+  async update({ params, request, response }) {
+    const category = await Category.findBy('id', params.id)
+
+    if (!category) {
+      return response.status(404).send({ error: 'Category not found' })
+    }
+
+    const data = request.all()
+
+    await category.merge(data)
+
+    await category.save()
+
+    await category.load('image')
+
+    return category
+  }
 
   /**
    * Delete a category with id.
@@ -67,7 +96,11 @@ class CategoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params, request, response }) {}
+  async destroy({ params, request, response }) {
+    const category = await Category.findBy('id', params.id)
+
+    await category.delete()
+  }
 }
 
 module.exports = CategoryController

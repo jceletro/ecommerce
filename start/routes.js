@@ -18,7 +18,7 @@ const Route = use('Route')
 
 Route.post('users', 'UserController.store')
 Route.post('sessions', 'SessionController.store')
-Route.post('files', 'FileController.store')
+Route.post('files', 'FileController.store').middleware(['auth'])
 Route.get('files/:id', 'FileController.show')
 
 Route.post('passwords', 'ForgotPasswordController.store')
@@ -45,8 +45,26 @@ Route.post('categories', 'CategoryController.store').middleware([
   'auth',
   'admin'
 ])
+Route.put('categories/:id', 'CategoryController.update').middleware([
+  'auth',
+  'admin'
+])
+Route.delete('categories/:id', 'CategoryController.destroy').middleware([
+  'auth',
+  'admin'
+])
+Route.get('categories/:id', 'CategoryController.show')
+Route.get('categories', 'CategoryController.index')
 
 /** Product */
-
+Route.get('products', 'ProductController.index')
+Route.get('products/:id', 'ProductController.show')
+Route.put('products/:id', 'ProductController.update').middleware([
+  'auth',
+  'admin'
+])
 Route.post('products', 'ProductController.store').middleware(['auth', 'admin'])
-Route.post('products/:id', 'ProductController.show')
+Route.delete('products/:id', 'ProductController.destroy').middleware([
+  'auth',
+  'admin'
+])

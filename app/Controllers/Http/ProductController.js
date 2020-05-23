@@ -19,7 +19,14 @@ class ProductController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view }) {}
+  async index({ request }) {
+    const { page } = request.get
+    const products = await Product.query()
+      .with('category', 'image')
+      .paginate(page)
+
+    return products
+  }
 
   /**
    * Create/save a new product.
@@ -29,7 +36,7 @@ class ProductController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response }) {
+  async store({ request }) {
     const data = request.only([
       'title',
       'description',
@@ -52,8 +59,12 @@ class ProductController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params }) {
+  async show({ params, response }) {
     const product = await Product.find(params.id)
+
+    if (!product) {
+      return response.status(404).send({ error: 'Product not found' })
+    }
 
     await product.loadMany(['image', 'category'])
 
@@ -68,7 +79,21 @@ class ProductController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {}
+  async update({ params, request, response }) {
+    const product = await Product.findBy('id', params.id)
+
+    if (!product) {
+      return response.status(404).send({ error: 'Product not found' })
+    }
+
+    const data = request.all()
+
+    await product.merge(data)
+    await product.save()
+    await product.loadMany(['category', 'image'])
+
+    return product
+  }
 
   /**
    * Delete a product with id.
@@ -78,7 +103,10 @@ class ProductController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params, request, response }) {}
+  async destroy({ params }) {
+    const product = await Product.findBy('id', params.id)
+    await product.delete()
+  }
 }
 
 module.exports = ProductController

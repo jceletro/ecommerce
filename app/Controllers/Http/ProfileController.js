@@ -59,10 +59,9 @@ class ProfileController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ auth, request, response }) {
+  async update({ auth, request }) {
     const userId = auth.user.id
     const profile = await Profile.findBy('user_id', userId)
-    console.log(profile)
     const data = request.only(['tellphone', 'gender', 'birthday'])
 
     profile.merge(data)
