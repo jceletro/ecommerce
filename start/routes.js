@@ -16,8 +16,11 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.post('users', 'UserController.store')
+/** Users */
+Route.post('users', 'UserController.store').validator('User')
+/** Sessions */
 Route.post('sessions', 'SessionController.store')
+/** Files */
 Route.post('files', 'FileController.store').middleware(['auth'])
 Route.get('files/:id', 'FileController.show')
 
