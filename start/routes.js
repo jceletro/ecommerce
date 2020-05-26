@@ -19,39 +19,45 @@ const Route = use('Route')
 /** Users */
 Route.post('users', 'UserController.store').validator('User')
 /** Sessions */
-Route.post('sessions', 'SessionController.store')
+Route.post('sessions', 'SessionController.store').validator('Session')
 /** Files */
 Route.post('files', 'FileController.store').middleware(['auth'])
 Route.get('files/:id', 'FileController.show')
 
-Route.post('passwords', 'ForgotPasswordController.store')
-Route.put('passwords', 'ForgotPasswordController.update')
-Route.post('users/profiles/email', 'AlterEmailController.store').middleware([
-  'auth'
-])
-Route.put('users/profiles/email', 'AlterEmailController.update').middleware(
-  'auth'
+Route.post('passwords', 'ForgotPasswordController.store').validator(
+  'ForgotPassword'
 )
+Route.put('passwords', 'ForgotPasswordController.update').validator(
+  'ResetPassword'
+)
+Route.post('users/profiles/email', 'AlterEmailController.store')
+  .middleware(['auth'])
+  .validator('AlterEmail')
+Route.put('users/profiles/email', 'AlterEmailController.update')
+  .middleware('auth')
+  .validator('ChangeEmail')
 /** User Profile */
-Route.post('users/profiles', 'ProfileController.store').middleware(['auth'])
-Route.put('users/profiles', 'ProfileController.update').middleware(['auth'])
+Route.post('users/profiles', 'ProfileController.store')
+  .middleware(['auth'])
+  .validator('CreateProfile')
+Route.put('users/profiles', 'ProfileController.update')
+  .middleware(['auth'])
+  .validator('UpdateProfile')
 Route.get('users/profiles', 'ProfileController.show').middleware(['auth'])
 
 /** User Address */
 
-Route.post('users/addresses', 'UserAddressController.store').middleware([
-  'auth'
-])
+Route.post('users/addresses', 'UserAddressController.store')
+  .middleware(['auth'])
+  .validator('CreateAddress')
 /** Category */
 
-Route.post('categories', 'CategoryController.store').middleware([
-  'auth',
-  'admin'
-])
-Route.put('categories/:id', 'CategoryController.update').middleware([
-  'auth',
-  'admin'
-])
+Route.post('categories', 'CategoryController.store')
+  .middleware(['auth', 'admin'])
+  .validator('Category')
+Route.put('categories/:id', 'CategoryController.update')
+  .middleware(['auth', 'admin'])
+  .validator('Category')
 Route.delete('categories/:id', 'CategoryController.destroy').middleware([
   'auth',
   'admin'

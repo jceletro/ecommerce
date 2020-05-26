@@ -24,6 +24,7 @@ class ExceptionHandler extends BaseExceptionHandler {
     if (error.name === 'ValidationException') {
       return response.status(error.status).send(error.messages)
     }
+    return super.handle(...arguments)
   }
 
   /**
