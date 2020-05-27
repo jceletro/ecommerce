@@ -1,6 +1,5 @@
 'use strict'
 const Antl = use('Antl')
-
 class CreateAddress {
   get validateAll() {
     return true

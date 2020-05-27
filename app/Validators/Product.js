@@ -1,14 +1,15 @@
 'use strict'
 const Antl = use('Antl')
 
-class UpdateProfile {
+class Product {
   get validateAll() {
     return true
   }
 
   get rules() {
     return {
-      birthday: 'date'
+      title: 'required',
+      price: 'required'
     }
   }
 
@@ -17,4 +18,4 @@ class UpdateProfile {
   }
 }
 
-module.exports = UpdateProfile
+module.exports = Product

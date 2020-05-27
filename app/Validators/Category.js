@@ -6,6 +6,7 @@ class Category {
     return true
   }
 
+  /** Verificar error handling */
   get rules() {
     return {
       title: 'required'

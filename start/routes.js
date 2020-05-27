@@ -55,9 +55,11 @@ Route.post('users/addresses', 'UserAddressController.store')
 Route.post('categories', 'CategoryController.store')
   .middleware(['auth', 'admin'])
   .validator('Category')
-Route.put('categories/:id', 'CategoryController.update')
-  .middleware(['auth', 'admin'])
-  .validator('Category')
+Route.put('categories/:id', 'CategoryController.update').middleware([
+  'auth',
+  'admin'
+])
+
 Route.delete('categories/:id', 'CategoryController.destroy').middleware([
   'auth',
   'admin'
@@ -72,7 +74,9 @@ Route.put('products/:id', 'ProductController.update').middleware([
   'auth',
   'admin'
 ])
-Route.post('products', 'ProductController.store').middleware(['auth', 'admin'])
+Route.post('products', 'ProductController.store')
+  .middleware(['auth', 'admin'])
+  .validator('Product')
 Route.delete('products/:id', 'ProductController.destroy').middleware([
   'auth',
   'admin'
