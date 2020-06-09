@@ -16,6 +16,13 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
+Route.get('/', () => {
+  return { 
+    title: 'E-commerce Adonis',
+    version: '0.0.1'
+   }
+})
+
 /** Users */
 Route.post('users', 'UserController.store').validator('User')
 /** Sessions */
@@ -32,29 +39,23 @@ Route.put('passwords', 'ForgotPasswordController.update').validator(
 )
 Route.post('users/profiles/email', 'AlterEmailController.store')
   .middleware(['auth'])
-  .validator('AlterEmail')
 Route.put('users/profiles/email', 'AlterEmailController.update')
   .middleware('auth')
-  .validator('ChangeEmail')
 /** User Profile */
 Route.post('users/profiles', 'ProfileController.store')
   .middleware(['auth'])
-  .validator('CreateProfile')
 Route.put('users/profiles', 'ProfileController.update')
   .middleware(['auth'])
-  .validator('UpdateProfile')
 Route.get('users/profiles', 'ProfileController.show').middleware(['auth'])
 
 /** User Address */
 
 Route.post('users/addresses', 'UserAddressController.store')
   .middleware(['auth'])
-  .validator('CreateAddress')
-/** Category */
 
+/** Category */
 Route.post('categories', 'CategoryController.store')
   .middleware(['auth', 'admin'])
-  .validator('Category')
 Route.put('categories/:id', 'CategoryController.update').middleware([
   'auth',
   'admin'
@@ -76,7 +77,6 @@ Route.put('products/:id', 'ProductController.update').middleware([
 ])
 Route.post('products', 'ProductController.store')
   .middleware(['auth', 'admin'])
-  .validator('Product')
 Route.delete('products/:id', 'ProductController.destroy').middleware([
   'auth',
   'admin'
